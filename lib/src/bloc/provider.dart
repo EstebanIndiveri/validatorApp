@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:validatorapp/src/bloc/login_bloc.dart';
+export 'package:validatorapp/src/bloc/login_bloc.dart';
 
 class Provider extends InheritedWidget {
 
@@ -12,8 +13,10 @@ class Provider extends InheritedWidget {
   bool updateShouldNotify(InheritedWidget oldWidget) =>true;
 
   static LoginBloc of (BuildContext context){
-    return (context.dependOnInheritedWidgetOfExactType(aspect: Provider)as Provider).loginBloc;
+    return context.dependOnInheritedWidgetOfExactType<Provider>().loginBloc;
+    // return (context.dependOnInheritedWidgetOfExactType(aspect: Provider)as Provider).loginBloc;
     
   }
+  
 
 }
