@@ -3,7 +3,12 @@ import 'package:validatorapp/src/bloc/provider.dart';
 import 'package:validatorapp/src/model/Producto_model.dart';
 import 'package:validatorapp/src/providers/productos_provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
     final productosProvider=new ProductosProvider();
 
   @override
@@ -41,8 +46,10 @@ class HomePage extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         }
       },
+      
     );
   }
+
   Widget _crearItem(BuildContext context, ProductoModel producto){
     return Dismissible(
         key: UniqueKey(),
@@ -51,11 +58,12 @@ class HomePage extends StatelessWidget {
         ),
         onDismissed: (direction){
           //Delete
+          productosProvider.borrarProducto(producto.id);
         },
           child: ListTile(
           title: Text('${producto.titulo} - ${producto.valor}'),
           subtitle: Text(producto.id),
-          onTap: ()=>Navigator.pushNamed(context, 'producto'),
+          onTap: ()=>Navigator.pushNamed(context, 'producto',arguments: producto),
         ),
     );
   }
