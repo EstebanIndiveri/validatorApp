@@ -162,7 +162,7 @@ class _ProductoPageState extends State<ProductoPage> {
       );
     }else{
       return Image(
-        image:AssetImage('assets/no-image.png'),
+        image:AssetImage(_image?.path??'assets/no-image.png'),
         height: 300.0,
         fit:BoxFit.cover
       );
@@ -173,7 +173,7 @@ class _ProductoPageState extends State<ProductoPage> {
 
      final pickedFile = await picker.getImage(source: ImageSource.gallery);
      if(_image!=null){
-       
+
      }
      setState(() {
       _image = File(pickedFile.path);
