@@ -37,7 +37,7 @@ class _ProductoPageState extends State<ProductoPage> {
           ),
           IconButton(
             icon:Icon(Icons.camera_alt),
-            onPressed: (){},
+            onPressed: _tomarFoto,
           ),
         ],
       ),
@@ -114,15 +114,17 @@ class _ProductoPageState extends State<ProductoPage> {
     );
   }
 
-  void _submit(){
+  void _submit()async{
     if(!formKey.currentState.validate())return;
 
     formKey.currentState.save();
 
     setState(() {
     _guardando=true;
-      
     });
+    if(_image!=null){
+      producto.fotoUrl= await productoProvider.subirImagen(_image);
+    }
     if(producto.id==null){
       productoProvider.crearProducto(producto);
     }else{
@@ -170,15 +172,23 @@ class _ProductoPageState extends State<ProductoPage> {
   }
 
   _seleccionarFoto() async{
+    _procesarImagen(ImageSource.gallery);
+  }
 
-     final pickedFile = await picker.getImage(source: ImageSource.gallery);
+  _tomarFoto() async{
+    _procesarImagen(ImageSource.camera);
+  }
+  _procesarImagen(ImageSource origen)async{
+    final pickedFile = await picker.getImage(source: origen);
      if(_image!=null){
 
      }
      setState(() {
       _image = File(pickedFile.path);
     });
-    // foto=await ImagePicker.getImage(
+  }
+}
+   // foto=await ImagePicker.getImage(
     //   source: ImageSource.gallery
     // );
     // if(foto!=null){
@@ -187,5 +197,3 @@ class _ProductoPageState extends State<ProductoPage> {
     // setState(() {
       
     // });
-  }
-}
