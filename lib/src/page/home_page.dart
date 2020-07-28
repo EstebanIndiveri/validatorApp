@@ -33,6 +33,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _crearListado() {
+    setState(() {
+      
+    });
     return FutureBuilder(
       future: productosProvider.cargarProductos(),
       builder: (BuildContext context,AsyncSnapshot<List<ProductoModel>> snapshot) {
@@ -60,11 +63,33 @@ class _HomePageState extends State<HomePage> {
           //Delete
           productosProvider.borrarProducto(producto.id);
         },
-          child: ListTile(
-          title: Text('${producto.titulo} - ${producto.valor}'),
-          subtitle: Text(producto.id),
-          onTap: ()=>Navigator.pushNamed(context, 'producto',arguments: producto),
-        ),
+          child: Card(
+            child: Column(
+              children: <Widget>[
+                (producto.fotoUrl==null)
+                ?Image(image: AssetImage('assets/no-image.png'),)
+                :FadeInImage(
+                  image: NetworkImage(producto.fotoUrl),
+                  placeholder: AssetImage('assets/jar-loading.gif'),
+                  height: 300.0,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+                ListTile(
+                  title: Text('${producto.titulo} - ${producto.valor}'),
+                  subtitle: Text(producto.id),
+                  onTap: ()=>Navigator.pushNamed(context, 'producto',arguments: producto),
+                ),
+              ],
+            ),
+          )
     );
+
+
+    // ListTile(
+    //       title: Text('${producto.titulo} - ${producto.valor}'),
+    //       subtitle: Text(producto.id),
+    //       onTap: ()=>Navigator.pushNamed(context, 'producto',arguments: producto),
+    //     ),
   }
 }

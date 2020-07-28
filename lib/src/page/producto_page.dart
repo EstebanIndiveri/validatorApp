@@ -134,7 +134,7 @@ class _ProductoPageState extends State<ProductoPage> {
       _guardando=false;
     });
       mostrarSnackBar('Registro guardado');
-      Navigator.pop(context);
+      Navigator.pushNamed(context, 'home');
   }
 
   Widget _crearDisponible() {
@@ -159,8 +159,10 @@ class _ProductoPageState extends State<ProductoPage> {
 
   Widget _mostrarFoto(){
     if(producto.fotoUrl!=null){
-      return Container(
-
+      return FadeInImage(
+        image: NetworkImage(producto.fotoUrl),
+        placeholder: AssetImage('assets/jar-loading.gif'),
+        fit: BoxFit.contain,
       );
     }else{
       return Image(
@@ -181,7 +183,7 @@ class _ProductoPageState extends State<ProductoPage> {
   _procesarImagen(ImageSource origen)async{
     final pickedFile = await picker.getImage(source: origen);
      if(_image!=null){
-
+       producto.fotoUrl=null;
      }
      setState(() {
       _image = File(pickedFile.path);
