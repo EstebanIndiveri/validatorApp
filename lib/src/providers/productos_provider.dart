@@ -6,14 +6,15 @@ import 'package:http_parser/http_parser.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:validatorapp/src/model/Producto_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:validatorapp/src/preferencias_usuario/preferencias.dart';
 class ProductosProvider{
 
   final String _url='https://flutter-snap-bd1ef.firebaseio.com';
-  
+  final _prefs=new PreferenciasUsuario();
 
   Future<bool>crearProducto(ProductoModel producto)async{
     
-    final url='$_url/productos.json';
+    final url='$_url/productos.json?auth=${_prefs.token}';
 
     final resp=await http.post(url,body: productoModelToJson(producto));
 
@@ -27,7 +28,7 @@ class ProductosProvider{
 
   Future<bool>editarProducto(ProductoModel producto)async{
       
-      final url='$_url/productos/${producto.id}.json';
+      final url='$_url/productos/${producto.id}.json?auth=${_prefs.token}';
 
       final resp=await http.put(url,body: productoModelToJson(producto));
 
@@ -40,11 +41,15 @@ class ProductosProvider{
     }
 
   Future<List<ProductoModel>>cargarProductos()async{
-    final url='$_url/productos.json';
+    final url='$_url/productos.json?auth=${_prefs.token}';
     final resp=await http.get(url);
     final Map<String,dynamic> decodedData=json.decode(resp.body);
-    if(decodedData==null)return [];
     final List<ProductoModel> productos= new List();
+
+    if(decodedData==null)return [];
+
+    if(decodedData['error']!=null)return [];
+
     decodedData.forEach((id, prod) {
       final prodTemp=ProductoModel.fromJson(prod);
       prodTemp.id=id;
@@ -56,7 +61,7 @@ class ProductosProvider{
   }
 
   Future<int>borrarProducto(String id)async{
-    final url='$_url/productos/$id.json';
+    final url='$_url/productos/$id.json?auth=${_prefs.token}';
     final resp=await http.delete(url);
 
     print(json.decode(resp.body));

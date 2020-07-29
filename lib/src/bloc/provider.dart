@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:validatorapp/src/bloc/login_bloc.dart';
+import 'package:validatorapp/src/bloc/productos_bloc.dart';
+export 'package:validatorapp/src/bloc/productos_bloc.dart';
 export 'package:validatorapp/src/bloc/login_bloc.dart';
 
 class Provider extends InheritedWidget {
 
   static Provider _instancia;
+  final _productosBloc=new ProductosBloc();
 
   factory Provider({Key key, Widget child}){
     if(_instancia==null){
@@ -26,6 +29,12 @@ class Provider extends InheritedWidget {
 
   static LoginBloc of (BuildContext context){
     return context.dependOnInheritedWidgetOfExactType<Provider>().loginBloc;
+    // return (context.dependOnInheritedWidgetOfExactType(aspect: Provider)as Provider).loginBloc;
+    
+  }
+
+    static ProductosBloc productosBloc (BuildContext context){
+    return context.dependOnInheritedWidgetOfExactType<Provider>()._productosBloc;
     // return (context.dependOnInheritedWidgetOfExactType(aspect: Provider)as Provider).loginBloc;
     
   }
