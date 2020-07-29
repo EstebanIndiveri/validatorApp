@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:validatorapp/src/bloc/provider.dart';
 import 'package:validatorapp/src/providers/usuario_provider.dart';
 
-class LoginPage extends StatelessWidget {
+class RegistroPage extends StatelessWidget {
 
-  final usuarioProvider=new UsuarioProvider();
+  final usuarioProvider = new UsuarioProvider();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,7 +98,7 @@ class LoginPage extends StatelessWidget {
             ),
             child: Column(
               children: <Widget>[
-                Text('Ingeso',style: TextStyle(fontSize: 20.0),),
+                Text('Crear cuenta',style: TextStyle(fontSize: 20.0),),
                 SizedBox(height: 50.0,),
                 _crearEmail(bloc),
                 SizedBox(height: 30.0,),
@@ -109,14 +110,14 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           FlatButton(
-            child:Text('Crear nueva cuenta',
-              style: TextStyle(
+            child:Text('¿Ya tienes cuenta? Login',
+            style: TextStyle(
                 color: Colors.deepPurple,
                 fontSize: 16.0,
                 
               ),
             ),
-            onPressed: ()=>Navigator.pushReplacementNamed(context, 'registro'),
+            onPressed: ()=>Navigator.pushReplacementNamed(context, 'login'),
           ),
           SizedBox(height: 100.0,),
         ],
@@ -179,7 +180,7 @@ class LoginPage extends StatelessWidget {
         return RaisedButton(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 80.0,vertical: 15.0),
-            child: Text('Ingresar'),
+            child: Text('Crear usuario'),
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0)
@@ -187,17 +188,17 @@ class LoginPage extends StatelessWidget {
           elevation: 0.0,
           color:Colors.deepPurple,
           textColor: Colors.white,
-          onPressed: snapshot.hasData?()=>_login(bloc,context):null,
+          onPressed: snapshot.hasData?()=>_register(bloc,context):null,
         );
       }
     );
     
   }
-  _login(LoginBloc bloc, BuildContext context){
+  _register(LoginBloc bloc, BuildContext context){
     // print('email: ${bloc.email}');
     // print('Pasword ${bloc.password}');
-    usuarioProvider.login(bloc.email, bloc.password);
 
     // Navigator.pushReplacementNamed(context, 'home');
+    usuarioProvider.nuevoUsuario(bloc.email, bloc.password);
   }
 }
